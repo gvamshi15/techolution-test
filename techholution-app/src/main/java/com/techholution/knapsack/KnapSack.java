@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class KnapSack {
 
-	public int knapSack(Integer[] weights, Integer[] values, int maxWeight) {
+	public int knapSack(int[] weights, int[] values, int maxWeight) {
 		int[][] sack = new int[weights.length][maxWeight + 1];
 		sack[0][0] = 0;
 		// first populate the zeroth row of the grid

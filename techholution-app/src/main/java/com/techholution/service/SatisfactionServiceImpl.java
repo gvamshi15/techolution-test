@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,13 +46,13 @@ public class SatisfactionServiceImpl implements SatisfactionService {
 		List<ItemPojo> itemsSublist = items.subList(1, items.size());
 		
 		//read list of values from sublist
-		List<Integer> values = itemsSublist.stream().map(item -> item.getSatisfaction()).collect(Collectors.toList());
+		int[] values = itemsSublist.stream().mapToInt(item -> item.getSatisfaction()).toArray();
 		
 		//read list of weights from sublist
-		List<Integer> weights = itemsSublist.stream().map(item -> item.getTimeTaken()).collect(Collectors.toList());
+		int[] weights = itemsSublist.stream().mapToInt(item -> item.getTimeTaken()).toArray();
 		
 		//get max value from KnapSack alogorithm
-		return knapsack.knapSack(weights.toArray(new Integer[weights.size()]), values.toArray(new Integer[values.size()]), maxTime);
+		return knapsack.knapSack(weights, values, maxTime);
 	}
 	
 	private List<ItemPojo> processFile(File inputFile) throws IOException {

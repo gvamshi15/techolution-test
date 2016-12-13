@@ -9,17 +9,17 @@ import com.techholution.knapsack.KnapSack;
 
 public class KnapSackTest {
 
-	private Integer weights[];
+	private int weights[];
 
-	private Integer values[];
+	private int values[];
 
 
 	private KnapSack knapSack;
 
 	@Before
 	public void setup() {
-		weights = new Integer[] { 10, 20, 30 };
-		values = new Integer[] { 60, 100, 120 };
+		weights = new int[] { 10, 20, 30 };
+		values = new int[] { 60, 100, 120 };
 		knapSack = new KnapSack();
 	}
 
