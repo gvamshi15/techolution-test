@@ -44,12 +44,24 @@ Go on the project's root folder, then type:
 Import as *Existing Maven Project* and run it as *Spring Boot App*.
 
 ### Steps to deploy using CF commandline
+cf push -m 512m -p C:\Users\GULAPALLY\Documents\workspace-pcf\custom-map-service-broker\target\custom-map-service-broker-0.0.1-SNAPSHOT.jar customhashmap-app
 
--cf push -m 512m -p custom-map-service-broker\target\custom-map-service-broker-0.0.1-SNAPSHOT.jar custom-map-service-broker
+cf create-service-broker customhashmap-broker scott tiger https://customhashmap-app.cfapps.io --space-scoped
 
--cf create-service-broker custom-map-service-broker scott tiger https://custom-map-service-broker.cfapps.io --space-scoped
+cf create-service customhashmap basic customhashmap-service
 
--cf create-service CustomHashMap-70da1ed1-7b48-48b9-9c1e-e20bd8c602a8 basic custom-hashmap-service-1
+cf bind-service customhashmap-app customhashmap-service
+
+cf create-service-key customhashmap-service customhashmap-keys
+
+cf service-key customhashmap-service customhashmap-keys
+{
+ "password": "tiger",
+ "uri": "http://customhashmap-app.cfapps.io/customhashmap/ce0ab977-f8c1-40f4-8d3b-c81cd2ece337",
+ "username": "scott"
+}
+
+cf push -m 256m -p C:\Users\GULAPALLY\Documents\workspace-pcf\custom-map-service-broker-client\target\custom-map-service-broker-client-0.0.1-SNAPSHOT.jar customhashmap-client
 
 
 ### Solution
