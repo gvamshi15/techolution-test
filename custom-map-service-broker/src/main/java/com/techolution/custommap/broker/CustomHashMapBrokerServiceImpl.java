@@ -75,8 +75,8 @@ public class CustomHashMapBrokerServiceImpl<K, V> implements CustomHashMapBroker
     	UUID uuid = UUID.randomUUID();
     	service.setId(uuid.toString());
     	service.setDescription("Custom HashMap as Service");
-    	service.setName("CustomHashMap-"+uuid.toString());
-    	
+    	service.setName("customhashmap");
+    	service.setBindable(true);
     	Plan plan = new Plan();
     	plan.setId(uuid.toString());
     	plan.setName("basic");
