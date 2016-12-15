@@ -27,9 +27,9 @@ public class CustomHashMapServiceBrokerController {
 
 	@Autowired
 	private CustomHashMapBrokerService<String, ServiceInstance> customHashMapBrokerService;
-	
-    @Autowired
-    private Cloud cloud;
+
+	@Autowired
+	private Cloud cloud;
 
 	@RequestMapping("/v2/catalog")
 	public Catalog catalog() {
@@ -40,10 +40,22 @@ public class CustomHashMapServiceBrokerController {
 	public ResponseEntity<String> createServiceInstance(@PathVariable("id") String id,
 			@RequestBody ServiceInstance serviceInstance) {
 		serviceInstance.setId(id);
-		customHashMapBrokerService.put(id, serviceInstance);
-		return new ResponseEntity<>("{}", HttpStatus.CREATED);
+
+		ServiceInstance existing = customHashMapBrokerService.get(id);
+
+		if (existing != null) {
+			if (existing.equals(serviceInstance)) {
+				return new ResponseEntity<>("{}", HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>("{}", HttpStatus.CONFLICT);
+			}
+		} else {
+			customHashMapBrokerService.put(id, serviceInstance);
+			// haashService.create(id);
+			return new ResponseEntity<>("{}", HttpStatus.CREATED);
+		}
 	}
-	
+
 	@RequestMapping(value = "/v2/service_instances/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteServiceInstance(@PathVariable("id") String id,
 			@RequestParam("service_id") String serviceId, @RequestParam("plan_id") String planId) {
@@ -61,18 +73,30 @@ public class CustomHashMapServiceBrokerController {
 
 		serviceBinding.setId(id);
 		serviceBinding.setInstanceId(instanceId);
-
-		String pwd = UUID.randomUUID().toString();
-		Credential credential = new Credential();
-		credential.setId(pwd);
-		credential.setUri("http://" + myUri() + "/customhashmap/" + instanceId);
-		credential.setUsername("scott");
-		credential.setPassword("tiger");
-		serviceBinding.setCredentials(credential);
-		customHashMapBrokerService.saveBinding(id, serviceBinding);
+		// if service binding exists with same name then return the same
+		ServiceBinding existing = customHashMapBrokerService.getServiceBinding(id);
 		Credentials credentials = new Credentials();
-		credentials.setCredentials(credential);
-		return new ResponseEntity<Object>(credentials, HttpStatus.CREATED);
+		if (existing != null) {
+			if (existing.equals(serviceBinding)) {
+				credentials.setCredentials(existing.getCredentials());
+				return new ResponseEntity<Object>(credentials, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Object>("{}", HttpStatus.CONFLICT);
+			}
+		} else { // else create new binding
+
+			String pwd = UUID.randomUUID().toString();
+			Credential credential = new Credential();
+			credential.setId(pwd);
+			credential.setUri("http://" + myUri() + "/customhashmap/" + instanceId);
+			credential.setUsername("scott");
+			credential.setPassword("tiger");
+			serviceBinding.setCredentials(credential);
+			customHashMapBrokerService.saveBinding(id, serviceBinding);
+
+			credentials.setCredentials(credential);
+			return new ResponseEntity<Object>(credentials, HttpStatus.CREATED);
+		}
 	}
 
 	@RequestMapping(value = "/v2/service_instances/{instanceId}/service_bindings/{id}", method = RequestMethod.DELETE)
@@ -82,13 +106,12 @@ public class CustomHashMapServiceBrokerController {
 		customHashMapBrokerService.deleteBinding(id);
 		return new ResponseEntity<>("{}", HttpStatus.OK);
 	}
-	
-    @SuppressWarnings("unchecked")
-	private String myUri() {
-        ApplicationInstanceInfo applicationInstanceInfo = cloud.getApplicationInstanceInfo();
-        List<Object> uris = (List<Object>) applicationInstanceInfo.getProperties().get("uris");
-        return uris.get(0).toString();
-    }
 
+	@SuppressWarnings("unchecked")
+	private String myUri() {
+		ApplicationInstanceInfo applicationInstanceInfo = cloud.getApplicationInstanceInfo();
+		List<Object> uris = (List<Object>) applicationInstanceInfo.getProperties().get("uris");
+		return uris.get(0).toString();
+	}
 
 }
