@@ -44,32 +44,29 @@ Go on the project's root folder, then type:
 Import as *Existing Maven Project* and run it as *Spring Boot App*.
 
 ### Steps to deploy using CF commandline
-cf push -m 512m -p C:\Users\GULAPALLY\Documents\workspace-pcf\custom-map-service-broker\target\custom-map-service-broker-0.0.1-SNAPSHOT.jar customhashmap-app
 
-cf create-service-broker customhashmap-broker scott tiger https://customhashmap-app.cfapps.io --space-scoped
+$ cf push -m 512m -p C:\Users\GULAPALLY\Documents\workspace-sts-3.8.1.RELEASE\techolution-test\techolution-test\custom-map-service-broker\target\custom-map-service-broker-0.0.1-SNAPSHOT.jar customhashmap-broker
 
-cf create-service customhashmap basic customhashmap-service
+$ cf create-service-broker customhashmap-broker scott tiger https://customhashmap-broker.cfapps.io --space-scoped
 
-cf bind-service customhashmap-app customhashmap-service
+$ cf create-service CustomHashMap basic CustomHashMap1
 
-cf create-service-key customhashmap-service customhashmap-keys
+$ cf bind-service customhashmap-broker CustomHashMap1
 
-cf service-key customhashmap-service customhashmap-keys
+$ cf create-service-key CustomHashMap1 CustomHashMapKeys
+
+$ cf service-key CustomHashMap1 CustomHashMapKeys
+
 {
  "password": "tiger",
- "uri": "http://customhashmap-app.cfapps.io/customhashmap/ce0ab977-f8c1-40f4-8d3b-c81cd2ece337",
+ "uri": "http://customhashmap-broker.cfapps.io/customhashmap/420a5027-41b7-47c3-9410-8b8ce57231cc",
  "username": "scott"
 }
 
-cf push -m 256m -p C:\Users\GULAPALLY\Documents\workspace-pcf\custom-map-service-broker-client\target\custom-map-service-broker-client-0.0.1-SNAPSHOT.jar customhashmap-client
+Restart the service
+<!--cf restage customhashmap-broker -->
 
 
-### Solution
+$ cf push -m 512m -p C:\Users\GULAPALLY\Documents\workspace-sts-3.8.1.RELEASE\techolution-test\techolution-test\custom-map-service-broker-client\target\custom-map-service-broker-client-0.0.1-SNAPSHOT.jar customhashmap-broker-client
 
-#### Assumptions
-
-#### Approach
-
-
-#### Output
 
