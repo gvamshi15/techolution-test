@@ -12,7 +12,7 @@ public class HaashServiceInfoCreator extends CloudFoundryServiceInfoCreator<Haas
 	private final static Logger LOG = LoggerFactory.getLogger(HaashServiceInfoCreator.class);
 	
     public HaashServiceInfoCreator() {
-        super(new Tags("customhashmap-service"));
+        super(new Tags("CustomHashMap", "customhashmap"));
     }
     
     

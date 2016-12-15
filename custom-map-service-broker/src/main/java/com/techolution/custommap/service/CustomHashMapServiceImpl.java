@@ -15,17 +15,31 @@ public class CustomHashMapServiceImpl<I, K, V> implements CustomHashMapService<I
 
 	@Override
 	public void put(I instanceId, K key, V value) {
-		serviceInstanceMap.find(instanceId).store(key, value);
+		CustomHashMap<K,V> keyValueMap = serviceInstanceMap.find(instanceId);
+		if (keyValueMap == null) {
+			keyValueMap = new CustomHashMap<>();
+		}
+		keyValueMap.store(key, value);
+		serviceInstanceMap.store(instanceId, keyValueMap);
 	}
 
 	@Override
 	public V get(I instanceId, K key) {
-		return serviceInstanceMap.find(instanceId).find(key);
+		CustomHashMap<K,V> keyValueMap = serviceInstanceMap.find(instanceId);
+		if (keyValueMap == null) {
+			keyValueMap = new CustomHashMap<>();
+			serviceInstanceMap.store(instanceId, keyValueMap);
+			return null;
+		}
+		return keyValueMap.find(key);
 	}
 
 	@Override
 	public void delete(I instanceId, K key) {
-		serviceInstanceMap.find(instanceId).remove(key);
+		CustomHashMap<K,V> keyValueMap = serviceInstanceMap.find(instanceId);
+		if (keyValueMap != null) {
+			keyValueMap.remove(key);
+		}
 	}
 	
 

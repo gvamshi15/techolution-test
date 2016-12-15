@@ -73,9 +73,9 @@ public class CustomHashMapBrokerServiceImpl<K, V> implements CustomHashMapBroker
     	List<com.techolution.custommap.domain.Service> services = new ArrayList<>();
     	com.techolution.custommap.domain.Service service = new com.techolution.custommap.domain.Service();
     	UUID uuid = UUID.randomUUID();
-    	service.setId(uuid.toString());
+    	service.setId("1109");
     	service.setDescription("Custom HashMap as Service");
-    	service.setName("customhashmap");
+    	service.setName("CustomHashMap");
     	service.setBindable(true);
     	Plan plan = new Plan();
     	plan.setId(uuid.toString());
