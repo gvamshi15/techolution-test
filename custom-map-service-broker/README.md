@@ -55,7 +55,6 @@ Import as *Existing Maven Project* and run it as *Spring Boot App*.
 ### Solution
 
 #### Assumptions
-Considered max weight in minutes and also time taken to eat the dish is also in minutes, hence no conversion has been done to the time.
 
 #### Approach
 
