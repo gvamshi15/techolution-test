@@ -12,7 +12,7 @@ public class HaashServiceInfoCreator extends CloudFoundryServiceInfoCreator<Haas
 	private final static Logger LOG = LoggerFactory.getLogger(HaashServiceInfoCreator.class);
 	
     public HaashServiceInfoCreator() {
-        super(new Tags("CustomHashMap", "customhashmap"));
+        super(new Tags("CustomHashMap"));
     }
     
     
@@ -24,7 +24,7 @@ public class HaashServiceInfoCreator extends CloudFoundryServiceInfoCreator<Haas
         String uri = (String) credentials.get("uri");
         String username = (String) credentials.get("username");
         String password = (String) credentials.get("password");
-
+        
         return new HaashServiceInfo(id, uri, username, password);
     }
 

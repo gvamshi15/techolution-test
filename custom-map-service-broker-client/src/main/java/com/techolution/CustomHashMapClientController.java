@@ -1,5 +1,7 @@
 package com.techolution;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +20,7 @@ import org.springframework.web.client.RestOperations;
 @RequestMapping("/")
 public class CustomHashMapClientController {
 
-	//private final static Logger LOG = LoggerFactory.getLogger(CustomHashMapClientController.class);
+	private final static Logger LOG = LoggerFactory.getLogger(CustomHashMapClientController.class);
 
 	@Autowired
 	private RestOperations restTemplate;
@@ -47,6 +49,7 @@ public class CustomHashMapClientController {
 
 	@RequestMapping(value = "/CustomHashmap/{key}", method = RequestMethod.PUT)
 	public ResponseEntity<String> put(@PathVariable("key") String key, @RequestBody String value) {
+		LOG.info("Service Info: {}", haashServiceInfo );
 		restTemplate.put(haashServiceInfo.getUri() + "/" + key, getEntity(value));
 		return new ResponseEntity<>("{}", HttpStatus.CREATED);
 	}
