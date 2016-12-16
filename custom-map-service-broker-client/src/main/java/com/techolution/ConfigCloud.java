@@ -13,8 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * Java Configuration class that fetches the runtime information when running in
- * a Cloud environment and makes it available as 3 Spring Beans: Bound Services,
- * Application/Instance information and Cloud Properties.
+ * a Cloud environment.
  */
 @Configuration
 public class ConfigCloud {
@@ -39,7 +38,7 @@ public class ConfigCloud {
 	@Bean
 	public HaashServiceInfo haashServiceInfo(Cloud cloud) {
 		HaashServiceInfo haashServiceInfo = null;
-		List<ServiceInfo> serviceInfos = cloud.getServiceInfos();
+		List<ServiceInfo> serviceInfos = cloud.getServiceInfos(HaashServiceInfoCreator.class);
 		for (ServiceInfo serviceInfo : serviceInfos) {
 			if (serviceInfo instanceof HaashServiceInfo) {
 				haashServiceInfo = (HaashServiceInfo) serviceInfo;

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestOperations;
 
 @RestController
-@RequestMapping("/")
 public class CustomHashMapClientController {
 
 	private final static Logger LOG = LoggerFactory.getLogger(CustomHashMapClientController.class);
